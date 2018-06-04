@@ -1,8 +1,11 @@
 # p4_sketch
 
 argv[1]:The memory of Sketch, in 10000 Bytes. (For example, 5 means 50000 Bytes)
+
 argv[2]:The number of hash functions
+
 argv[3]:The ratio of the first level memory to the second level memory
+
 argv[4]:output model.
   
   	switch (out_model) {
@@ -36,4 +39,5 @@ argv[4]:output model.
 	}
  
 argv[5]:output file name
+
 argv[6]:read in file name
