@@ -17,12 +17,18 @@ using namespace std;
 
 struct MyInput {
 public:
-	char key[STR_MAX_LEN_INPUT] = { 0 };
+	char key[STR_MAX_LEN_INPUT];
+	MyInput(){
+		memset(key, 0, STR_MAX_LEN_INPUT);
+	}
 };
 
 class MyKey {
 public:
-	char key[STR_MAX_LEN] = { 0 };
+	char key[STR_MAX_LEN];
+	MyKey(){
+		memset(key, 0, STR_MAX_LEN);
+	}
 };
 
 bool operator < (MyKey an, MyKey bn) {
@@ -35,6 +41,15 @@ bool operator < (MyKey an, MyKey bn) {
 		}
 	}
 	return false;
+}
+
+bool operator == (MyKey an, MyKey bn) {
+	for (int i = 0;i < STR_MAX_LEN;i++) {
+		if (bn.key[i] != an.key[i]) {
+			return false;
+		}
+	}
+	return true;
 }
 
 
@@ -53,7 +68,7 @@ public:
 		hash_number = hash_number_;
 		hash_seed_offset = hash_seed_offset_;
 		counters_ = new int[kCountersNum_];
-		memset(counters_, 0, sizeof(counters_));
+		memset(counters_, 0, kCountersNum_ * sizeof(int));
 		num_row_counters_ = kCountersNum_ / hash_number;
 	}
 
@@ -93,7 +108,7 @@ public:
 		hash_number = hash_number_;
 		hash_seed_offset = hash_seed_offset_;
 		counters_ = new int[kCountersNum_];
-		memset(counters_, 0, sizeof(counters_));
+		memset(counters_, 0, kCountersNum_ * sizeof(int));
 		num_row_counters_ = kCountersNum_ / hash_number;
 	}
 
@@ -140,7 +155,7 @@ public:
 		memory_in_bytes = memory_in_bytes_;
 		kCountersNum_ = memory_in_bytes * 8 / 32;
 		counters_ = new int[kCountersNum_];
-		memset(counters_, 0, sizeof(counters_));
+		memset(counters_, 0, kCountersNum_ * sizeof(int));
 		pMemory = new int[hash_number_];
 		memcpy(pMemory, pMemory_, hash_number_ * sizeof(int));
 		hash_number = hash_number_;
@@ -159,9 +174,7 @@ public:
 			unsigned int index = murmur3_32(key, STR_MAX_LEN, i + hash_seed_offset) % (pMemory[i] / 4);
 			if (counters_[index_offset + index] < ret) {
 				counters_[index_offset + index] ++;
-				if (counters_[index_offset + index] < ret) {
-					ret = counters_[index_offset + index];
-				}
+				ret = counters_[index_offset + index];
 			}
 		}
 	}
@@ -228,11 +241,11 @@ int main(int argc, char* argv[]) {
 	ofstream fout;
 	fout.open(argv[5], ios::app);
 	for (int i = 0; i < INPUT_NUM;i++) {
-		fin.read((char*)(&my_input[i]), sizeof(my_input[i]));
+		fin.read((char*)(&my_input[i]), STR_MAX_LEN_INPUT);
 	}
 	fin.close();
 	for (int i = 0; i < INPUT_NUM;i++) {
-		memcpy(my_key, my_input, sizeof(my_key));
+		memcpy(my_key[i].key, my_input[i].key, STR_MAX_LEN);
 		cm_sketch.insert(my_key[i].key);
 		cu_sketch.insert(my_key[i].key);
 		new_cu_sketch.insert(my_key[i].key);
