@@ -203,7 +203,7 @@ int main(int argc, char* argv[]) {
 	int memory_in_bytes = atoi(argv[1]);
 	memory_in_bytes = memory_in_bytes * 10000;
 	const int hash_number = atoi(argv[2]);
-	double ratio = atoi(argv[3]);
+	double ratio = atof(argv[3]);
 	int out_model = atoi(argv[4]);
 	int *memory_of_row = new int[hash_number];
 	if (fabs(ratio - 1) < 0.00001) {
@@ -216,9 +216,9 @@ int main(int argc, char* argv[]) {
 		}
 	}
 	else {
-		memory_of_row[0] = memory_in_bytes * (ratio / (ratio + hash_number - 1));
+		memory_of_row[0] = memory_in_bytes * (ratio / (ratio + (double)hash_number - 1));
 		for (int i = 1;i < hash_number;i++) {
-			memory_of_row[i] = memory_in_bytes / (ratio + hash_number - 1);
+			memory_of_row[i] = memory_in_bytes / (ratio + (double)hash_number - 1);
 		}
 		memory_of_row[hash_number - 1] = memory_in_bytes;
 		for (int i = 0; i < hash_number - 1; i++) {
