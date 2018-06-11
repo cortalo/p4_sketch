@@ -13,7 +13,7 @@ using namespace std;
 
 #define STR_MAX_LEN_INPUT 8
 #define STR_MAX_LEN 4
-#define INPUT_NUM 10000
+#define INPUT_NUM 10000   //读入的流的个数
 
 struct MyInput {
 public:
@@ -215,7 +215,7 @@ int main(int argc, char* argv[]) {
 			memory_of_row[hash_number - 1] = memory_of_row[hash_number - 1] - memory_of_row[i];
 		}
 	}
-	else {
+	else {//可以改成等比
 		memory_of_row[0] = memory_in_bytes * (ratio / (ratio + (double)hash_number - 1));
 		for (int i = 1;i < hash_number;i++) {
 			memory_of_row[i] = memory_in_bytes / (ratio + (double)hash_number - 1);
@@ -287,6 +287,7 @@ int main(int argc, char* argv[]) {
 			new_cu_cr = new_cu_cr + 1;
 		}
 	}
+	//可以在这里加断点,看一下cu一共错了多少个流,不要太小.
 	cm_aae = (double)cm_aae / (double)my_map.size();
 	cu_aae = (double)cu_aae / (double)my_map.size();
 	new_cu_aae = (double)new_cu_aae / (double)my_map.size();
@@ -301,22 +302,22 @@ int main(int argc, char* argv[]) {
 
 	switch (out_model) {
 	case 0:
-		fout << "," << log(cm_aae);
+		fout << "," << cm_aae;
 		break;
 	case 1:
-		fout << "," << log(cu_aae);
+		fout << "," << cu_aae;
 		break;
 	case 2:
-		fout << "," << log(new_cu_aae);
+		fout << "," << new_cu_aae;
 		break;
 	case 3:
-		fout << "," << log(cm_are);
+		fout << "," << cm_are;
 		break;
 	case 4:
-		fout << "," << log(cu_are);
+		fout << "," << cu_are;
 		break;
 	case 5:
-		fout << "," << log(new_cu_are);
+		fout << "," << new_cu_are;
 		break;
 	case 6:
 		fout << "," << cm_cr;
@@ -330,3 +331,4 @@ int main(int argc, char* argv[]) {
 	}
 	
 }
+//更改流的数量之后,可以重新看一下最优的CU配置
